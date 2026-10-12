@@ -1,6 +1,6 @@
-# DTQL aggregation reference
+# TugQL / TugQT aggregation reference
 
-DTQL aggregation is YAML-native. Top-level keys follow logical pipeline order,
+TugQL structured query (TugQT) aggregation is YAML-native. Top-level keys follow logical pipeline order,
 with `columns` (the projection/SELECT stage) last:
 
 ```yaml

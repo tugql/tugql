@@ -34,7 +34,7 @@ columns:
 ```
 
 This is the YAML-native equivalent of the compact notation
-`c.*-(email)`. DTQL remains YAML-based and does not require a separate textual
+`c.*-(email)`. TugQL / TugQT remains YAML-native and does not require a separate textual
 parser for this feature.
 
 To exclude every column whose name begins with `billing` or `password`, use
