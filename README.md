@@ -11,6 +11,10 @@ TugQL specification — an open, portable query language and structured query tr
 > DTQL has been renamed to TugQL. TugQL is the canonical name of the SQL-like query language and TugQL.org is its canonical public home. DTQL.org is retained as a permanent redirect for backwards compatibility and discovery.
 > TugQT (Tug Query Tree) is the intended name for the human-readable, machine-readable JSON/YAML representation of the parsed/canonical query tree.
 
+## Used in DataTug development
+
+[DataTug](https://datatug.app) is evolving its query contract around TugQL and TugQT, with work spanning query definitions and how they connect to data sources. [See the tools behind DataTug](https://datatug.app/en/under-the-hood/tools-we-built/#query).
+
 ## References
 
 The [negative projection reference](reference/negative-projection.md) defines
