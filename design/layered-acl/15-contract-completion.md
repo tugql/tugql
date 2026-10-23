@@ -4,7 +4,7 @@ Normative completion of C1–C6 following approved H1–H7. JSON shapes are in [
 
 ## C4 evidence and transaction boundary
 
-Use `access/contract` for protocol DTOs/converters and keep `dal` independent of them. `access` owns internal assessment/evidence types; `access/contract` imports access, never the reverse. Existing `dtql` remains the query parser. Hosts implement provider/identity/storage interfaces; no new evaluator per host.
+Use `access/contract` for protocol DTOs/converters and keep `dal` independent of them. `access` owns internal assessment/evidence types; `access/contract` imports access, never the reverse. Existing `tugql` remains the query parser. Hosts implement provider/identity/storage interfaces; no new evaluator per host.
 
 The following signatures define the implementation seam; named values below are closed internal records, not browser DTOs:
 
@@ -39,7 +39,7 @@ Private evidence record: `{canonicalTarget, snapshotToken, exists, preImage, can
 | inspect/sample row assessment | Privately constructed InspectionAdmission; read-only inspection session, one bounded snapshot per assessment. Sampling first selects authorized candidates and uses the same assessment path. |
 | concrete execution/single write | ExecutionAdmission with complete normalized operation; all mandatory registered wrappers join the same owner operation token and storage transaction, never recursively reacquire locks. |
 | declared batch | Complete unique-target operation list known before admission; one ExecutionSession, preflight all, Execute once, all-or-none. |
-| public dynamic RunReadwriteTransaction/RWTxWorker on ACL-enabled DTQL profile | Reject with ACL_ENFORCEMENT_UNSUPPORTED **before invoking the worker**, including workers with two writes, intervening reads or conditional operations. Do not execute a worker to discover its operation list. |
+| public dynamic RunReadwriteTransaction/RWTxWorker on ACL-enabled TugQL profile | Reject with ACL_ENFORCEMENT_UNSUPPORTED **before invoking the worker**, including workers with two writes, intervening reads or conditional operations. Do not execute a worker to discover its operation list. |
 | legacy ACL-disabled or existing legacy DALgo profile | Preserve existing callback semantics. The restriction applies only to the new negotiated protected profile. |
 
 The adapter's unexported coordinator can use the existing raw transaction implementation internally; it is never returned through the secured public handle. Protected single-operation helpers and HTTP declared batches use the coordinator directly instead of routing through the rejected public dynamic callback. Public read/session forwarding remains secured; unsupported alternate handles fail closed. Policy snapshots are fixed for each owner admission; nesting joins the already bound snapshot/plan. This is a documented narrow compatibility limit, not a design for general logical transactions.

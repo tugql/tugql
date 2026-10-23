@@ -1,5 +1,5 @@
 {
-  "apiVersion": "dtql.org/authorization/v1",
+  "apiVersion": "tugql.org/authorization/v1",
   "mode": "inspect",
   "diagnosticLevel": "ordinary",
   "operations": [
@@ -27,7 +27,7 @@
           }
         ]
       },
-      "executionClass": "dtql"
+      "executionClass": "tugql"
     }
   ]
 }

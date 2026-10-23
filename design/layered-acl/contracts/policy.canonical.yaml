@@ -1,4 +1,4 @@
-apiVersion: dtql.org/access/v1
+apiVersion: tugql.org/access/v1
 bindings:
   groups:
     crm-team:

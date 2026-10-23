@@ -1,13 +1,13 @@
-# DTQL ACL policy format and semantics — proposed v1
+# TugQL ACL policy format and semantics — proposed v1
 
-Contract C1. Proposed `apiVersion: dtql.org/access/v1`; this identifier is a version discriminator, not a claim that a public schema URL is already deployed. DTQL owns this portable contract; DALgo supplies its first conforming implementation. `dalgo.io/access/v1` remains accepted by existing legacy decoders. Do not silently reinterpret or rewrite legacy documents.
+Contract C1. Proposed `apiVersion: tugql.org/access/v1`; this identifier is a version discriminator, not a claim that a public schema URL is already deployed. TugQL owns this portable contract; DALgo supplies its first conforming implementation. `dalgo.io/access/v1` remains accepted by existing legacy decoders. Do not silently reinterpret or rewrite legacy documents.
 
 ## Reuse and representation
 
 Canonical editable text is UTF-8 YAML 1.2 in its JSON-compatible subset; JSON represents the same abstract document. This adopts DALgo's existing document and condition shape rather than creating a policy DSL. The first portable profile supports existing hierarchical allow/deny, row `where/check`, field **allow-lists**, and principal bindings. The [reviewed mask extension](18-mask-supplement.md) adds collection and column include/exclude sets within the same evaluator. A UI “deny column” action produces an explicit allowed-field restriction in a separate policy against the current schema; it never invents a `deny fields` rule that DALgo cannot execute. New fields stay denied by that explicit list. Predicate-bearing deny rules are unsupported in this profile; represent positive admissible rows rather than introducing negation semantics.
 
 ```yaml
-apiVersion: dtql.org/access/v1
+apiVersion: tugql.org/access/v1
 kind: AccessPolicy
 metadata:
   name: tenant-access
@@ -51,7 +51,7 @@ All maps reject unknown keys. Keys are case-sensitive. Nonempty strings are boun
 
 | Field | Required type and meaning |
 |---|---|
-| `apiVersion` | Exact string `dtql.org/access/v1`. |
+| `apiVersion` | Exact string `tugql.org/access/v1`. |
 | `kind` | Exact `AccessPolicy`; audit-selection policies remain separate and never authorize data. |
 | `metadata` | Object with required `name`, stable policy ID; optional `description` ≤2048 bytes, non-normative author text; optional `visibility: private|public`, default public. |
 | `target` | Object with required `database`: exact local owner database ID. No regex or wildcard in MVP. Mount aliases resolve server-side to the owner's database ID before evaluation. |
@@ -100,12 +100,12 @@ Unknown-version, custom or nonportable policy documents remain represented by re
 
 ## Execution routes and scoped masks
 
-C7 optional execution is a conjunctive gate in the same AccessPolicy/evaluator. Omission adds no route restriction; a present allow array defaults to deny for unlisted classes. Entries are class:dtql|native_sql|native_graphql|stored_procedure; procedure entries also require exact canonical namespace and a staged mask as defined in [19](19-scoped-mask-stages.md). Reject duplicate class/namespace entries. Ordinary action/resource policy checks still apply, and different mandatory policies intersect.
+C7 optional execution is a conjunctive gate in the same AccessPolicy/evaluator. Omission adds no route restriction; a present allow array defaults to deny for unlisted classes. Entries are class:tugql|native_sql|native_graphql|stored_procedure; procedure entries also require exact canonical namespace and a staged mask as defined in [19](19-scoped-mask-stages.md). Reject duplicate class/namespace entries. Ordinary action/resource policy checks still apply, and different mandatory policies intersect.
 
 ```yaml
 execution:
   allow:
-    - class: dtql
+    - class: tugql
     - class: stored_procedure
       namespace: public
       mask:
@@ -117,4 +117,4 @@ execution:
 
 This admits only the scoped callable subset at this gate. Native SQL/GraphQL are unlisted and denied. For every procedure except sys_*, use include:["*"] then exclude:["sys_*"]. A deeper include can restore part of that exclusion, never a lower-owner denial. collectionMask and allow-rule fieldMask use the same stage form, with fieldPattern applying to nested field paths.
 
-executionClass is required in normalized operations; server derives it from the actual route/parsed operation and rejects a conflicting caller label. Calls hidden in SQL/functions/GraphQL cannot bypass procedure restrictions through a native label. The protected MVP permits real DTQL route gating and pure procedure-mask assessment only. All native/procedure effects execution remains unsupported even after a matching mask; no native parser/effects analyzer is added here. Existing DTQL action/table/row/column checks remain mandatory.
+executionClass is required in normalized operations; server derives it from the actual route/parsed operation and rejects a conflicting caller label. Calls hidden in SQL/functions/GraphQL cannot bypass procedure restrictions through a native label. The protected MVP permits real TugQL route gating and pure procedure-mask assessment only. All native/procedure effects execution remains unsupported even after a matching mask; no native parser/effects analyzer is added here. Existing TugQL action/table/row/column checks remain mandatory.

@@ -1,6 +1,6 @@
-# DTQL authorization, discovery and dry-run wire contract
+# TugQL authorization, discovery and dry-run wire contract
 
-Contract C2; proposed `dtql.org/authorization/v1`. This document and [A2 completion](15-contract-completion.md) define semantics; [closed JSON schemas](contracts/README.md) define JSON shapes. Schema fixtures are design artifacts; runtime bindings and validators remain WP1/WP2 implementation work. Existing query YAML remains unchanged. Management and decisions use JSON over HTTP; YAML remains the policy editing representation.
+Contract C2; proposed `tugql.org/authorization/v1`. This document and [A2 completion](15-contract-completion.md) define semantics; [closed JSON schemas](contracts/README.md) define JSON shapes. Schema fixtures are design artifacts; runtime bindings and validators remain WP1/WP2 implementation work. Existing query YAML remains unchanged. Management and decisions use JSON over HTTP; YAML remains the policy editing representation.
 
 ## Request schema
 
@@ -8,7 +8,7 @@ An `AuthorizationRequest` has the following closed-object shape. Unknown fields,
 
 | Field | Type | Requirement |
 |---|---|---|
-| `apiVersion` | string | Exact `dtql.org/authorization/v1`. |
+| `apiVersion` | string | Exact `tugql.org/authorization/v1`. |
 | `mode` | enum | `plan`, `inspect` or `sample`; dry run only, never mutation. |
 | `sample` | object | Required only in sample mode: `{query:{format,text,parameters?},limit:integer}`; limit 1–100. One table, one operation template; see sampling rules below. |
 | `subject` | object | Optional `{realm,id,kind}` for privileged other-principal Explain; omitted means authenticated self. `kind`: `user`, `service`, `application`, `agent`. |
@@ -22,7 +22,7 @@ With no concrete rows requested, plan returns disclosable **admission conditions
 
 ### Bounded top-N sampling (user direction)
 
-`sample` selects at most N rows using the supplied supported DTQL query, then evaluates the single operation template for those keys; this is deliberately a read-producing **internal** diagnostic operation, unlike plan mode. No record values are returned and no mutation is executed. Default order is canonical record ID ascending; an explicit supported ordering adds record ID as a final tie-breaker. Apply authorization filters before ordering/limit. Limit bounds inspected records, and the source must also honor the elapsed/resource budget; N alone is not a scan-cost bound. Stop with partial coverage on budget exhaustion.
+`sample` selects at most N rows using the supplied supported TugQL query, then evaluates the single operation template for those keys; this is deliberately a read-producing **internal** diagnostic operation, unlike plan mode. No record values are returned and no mutation is executed. Default order is canonical record ID ascending; an explicit supported ordering adds record ID as a final tie-breaker. Apply authorization filters before ordering/limit. Limit bounds inspected records, and the source must also honor the elapsed/resource budget; N alone is not a scan-cost bound. Stop with partial coverage on budget exhaustion.
 
 Ordinary self-sampling is confined to the intersection of subject-readable rows and requester-readable rows through every participating layer. Other-principal Explain does not grant the requester that principal's data visibility. `access:inspect-protected` in MVP is limited to explicitly supplied concrete keys and never broadens sampling. Broader protected sampling is follow-up. Never retrieve arbitrary hidden rows under a service credential merely to fill N. For an intended update/delete, sample the visible candidate rows **before applying that operation's write ACL**, otherwise the sample would omit precisely the denied rows being investigated. For insert, sample mode is invalid; inspect evaluates supplied candidate data without a stored-row read.
 
@@ -30,7 +30,7 @@ Result adds optional `sample:{requestedLimit,evaluatedCount,selection:"readable_
 
 An operation descriptor is `{id, action, resource, query?, mutation?}`. `action` is one leaf operation from C1. `resource` is `{databaseId,path,table?,rowId?,columns?}`: path is normalized logical path, table an optional derived display identifier, rowId an optional string key, columns an array of concrete field segment arrays. For a table path and query, no rowId. Resource names must agree with the parsed query/mutation and server mount mapping; server derives rather than trusting redundant fields. Real request fields must not claim policy owner IDs.
 
-`query` for `query` action is `{format:"dtql-yaml",text:string,parameters?:{name:scalar}}`. The text uses the existing DTQL single-source query shape. query.text and sample.query.text use strict bounded decoding before evaluation: no aliases/anchors/tags/merge keys/multiple documents/duplicate keys, depth≤16 and ≤4096 nodes, with the enclosing 1 MiB byte limit enforced before parsing. Mutations are discriminated: insert/set `{data:object}`; update `{changes:[{op:"set",path:[segment,...],value:JSONValue}]}`; delete `{}`. All mutations include optional `ifDataRevision:string` for execution, mandatory when an upper conditional write relied on a remote pre-image. Other update operators are rejected in MVP; architecture and existing DALgo model remain extensible. Body is bounded to 1 MiB; report oversized before parsing rather than silently truncating at a byte limit.
+`query` for `query` action is `{format:"tugql-yaml",text:string,parameters?:{name:scalar}}`. The text uses the existing TugQL single-source query shape. query.text and sample.query.text use strict bounded decoding before evaluation: no aliases/anchors/tags/merge keys/multiple documents/duplicate keys, depth≤16 and ≤4096 nodes, with the enclosing 1 MiB byte limit enforced before parsing. Mutations are discriminated: insert/set `{data:object}`; update `{changes:[{op:"set",path:[segment,...],value:JSONValue}]}`; delete `{}`. All mutations include optional `ifDataRevision:string` for execution, mandatory when an upper conditional write relied on a remote pre-image. Other update operators are rejected in MVP; architecture and existing DALgo model remain extensible. Body is bounded to 1 MiB; report oversized before parsing rather than silently truncating at a byte limit.
 
 Public users cannot provide `effectivePrincipal`, `policySet`, `owner`, trusted variables, a signed-result substitute, or mode `execute` to this endpoint. The caller's actor and transport authority always come from authentication. Execution uses existing read/PATCH/batch endpoints with the same descriptor normalizer.
 
@@ -61,7 +61,7 @@ Deduplicate by `(operationId,layerId,policyId,revision,ruleId,code,scope,slot,ca
 
 ## Reason-code taxonomy
 
-Use orthogonal code + action + scope instead of an expanding `TABLE_UPDATE_DENIED`/`ROW_DELETE_DENIED` Cartesian product. The existing OpenVaultDB outer lowercase error codes remain separate from these DTQL codes.
+Use orthogonal code + action + scope instead of an expanding `TABLE_UPDATE_DENIED`/`ROW_DELETE_DENIED` Cartesian product. The existing OpenVaultDB outer lowercase error codes remain separate from these TugQL codes.
 
 | Code | Meaning and required facts |
 |---|---|
@@ -125,6 +125,6 @@ The `blockers` array can contain this fact, an InGitDB `ACL_ROW_PREDICATE_FAILED
 
 ## C7 execution classification
 
-Operation descriptors include required `executionClass:dtql|native_sql|native_graphql|stored_procedure`. Stored-procedure **plan-only** descriptors additionally carry `callable:{namespace,name}` and omit query/mutation; action is an intended effect hint, never trusted effect authorization. Other classes forbid callable. Native plans may assess static route gates without native query text in this MVP. All non-DTQL inspect/sample/execution requests are unsupported; no route is enabled by a passing mask. Supported executable DTQL query/mutation forms stay unchanged. Unknown class rejects validation. Discovered layer descriptors include `executionClasses`, the actually enforceable classes (MVP `["dtql"]`), separately from representable policy classes.
+Operation descriptors include required `executionClass:tugql|native_sql|native_graphql|stored_procedure`. Stored-procedure **plan-only** descriptors additionally carry `callable:{namespace,name}` and omit query/mutation; action is an intended effect hint, never trusted effect authorization. Other classes forbid callable. Native plans may assess static route gates without native query text in this MVP. All non-TugQL inspect/sample/execution requests are unsupported; no route is enabled by a passing mask. Supported executable TugQL query/mutation forms stay unchanged. Unknown class rejects validation. Discovered layer descriptors include `executionClasses`, the actually enforceable classes (MVP `["tugql"]`), separately from representable policy classes.
 
 Add `ACL_EXECUTION_CLASS_DENIED` (scope operation, disclosable requested executionClass) and `ACL_CALLABLE_DENIED` (scope operation, callable identity only if safe) to the taxonomy. A blocker may include executionClass/callable from the normalized requested descriptor; never echo hidden resolved procedures. Gate denial is a definitive deny; gate match plus unavailable effects enforcement remains indeterminate/unsupported. Use the same code/scope across Explain and real route dispatch. Procedure invocation is never attempted to collect blockers. See T20 and C7 package gates.

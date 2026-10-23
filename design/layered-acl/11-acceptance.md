@@ -32,7 +32,7 @@ All row policies use the bound `editor` rule set with user/role/group matches; s
 
 ### T01 — Real query, conditions and concrete Explain
 
-Given baseline policies, when DataTug runs DTQL `from: {name: customers}` ordered by ID, then actual result IDs are exactly `[101,105]`. Record query execution at the storage boundary to prove tenant AND country AND status constraints apply before limit. Re-run with limit 1: `[101]`, not an empty page caused by post-page filtering.
+Given baseline policies, when DataTug runs TugQL `from: {name: customers}` ordered by ID, then actual result IDs are exactly `[101,105]`. Record query execution at the storage boundary to prove tenant AND country AND status constraints apply before limit. Re-run with limit 1: `[101]`, not an empty page caused by post-page filtering.
 
 When plan dry run runs with no row IDs, then no adapter row read/query occurs, result is conditional with row admission restrictions for each owner, and safe expressions or private/too-large references. Inspect `get /customers/101` allows; inspect `get /customers/102` denies InGitDB; actual gets match at unchanged snapshots. A query filtering to 102 succeeds with zero visible rows; Explain `query` must not falsely claim a point-get allow or list hidden rows.
 
@@ -82,7 +82,7 @@ Given instrumented storage/provider callbacks, plan makes zero data reads; inspe
 | T14 Policy integrity | Concurrent edits, invalid candidate set, symlink/traversal, missing enabled manifest, failed Git commit | 412/validation error and prior state unchanged; no disabled fallback; restart preserves old or new complete set only. Non-admin cannot change private/public classification. |
 | T15 Parsing and limits | Round-trip supported documents and malformed/oversized/deep/duplicate YAML/JSON; unknown versions | Canonical idempotence and decision equality for valid inputs; bounded validation rejection for invalid. No dropped unknown fields. |
 | T16 Generic writes | Insert candidate wrong tenant; update moves tenant; set drops protected field; nested set changes sibling; multi-target one denied | Deny and no mutation; correct where/check/fields facts. Delete checks pre-image. No trigger/schema changes before final authorization. |
-| T17 Adapter capabilities | Non-DTQL SQLite behind OpenVaultDB; opaque native ACL source; adapter lacks revisions | OVDB policies enforced on SQLite smoke; opaque lower denial stays authoritative; conditional remote writes unsupported without atomic revision capability. |
+| T17 Adapter capabilities | Non-TugQL SQLite behind OpenVaultDB; opaque native ACL source; adapter lacks revisions | OVDB policies enforced on SQLite smoke; opaque lower denial stays authoritative; conditional remote writes unsupported without atomic revision capability. |
 | T18 Top-N sample | Sample 1/2 visible candidates, no IDs; targeted update includes forbidden columns | Deterministic IDs/order, evaluated count ≤N, denied write columns included; no writes; sample-only flag. Zero sample conditional. No inference about hidden rows; target principal's broader read rights do not widen requester's visibility. |
 | T19 Condition size/privacy | No rows, one private predicate and one expression over disclosure limit | Opaque private/too_large references; result remains conditional; no weakened/silently cut predicate; private policy only visible to owner admin. |
 
@@ -94,7 +94,7 @@ Pass gate: all mandatory T01–T21 and V01–V08 checks at supported capabilitie
 
 ## A2 required regression vectors
 
-T20 — Execution classes/masks: a mandatory DTQL-only gate rejects native SQL/GraphQL and every procedure, including a SQL CALL disguised as native_sql. `public` include User_* admits names User_Create/User_ and denies Users_Create/sys_User; include * exclude sys_* rejects sys_read; include User_* exclude User_Delete rejects User_Delete even with a second matching include. Different namespace and canonical case remain distinct. Test mask round-trip, bounded matching and malformed masks. These are pure route decisions; actual protected native/procedure invocation remains unsupported and has zero effects, including a matching mask. A real DTQL query denied by an empty route allow-list executes no query; removing that narrowing policy restores the baseline. Each lower owner repeats route admission, so an upper allow cannot bypass a lower class denial.
+T20 — Execution classes/masks: a mandatory TugQL-only gate rejects native SQL/GraphQL and every procedure, including a SQL CALL disguised as native_sql. `public` include User_* admits names User_Create/User_ and denies Users_Create/sys_User; include * exclude sys_* rejects sys_read; include User_* exclude User_Delete rejects User_Delete even with a second matching include. Different namespace and canonical case remain distinct. Test mask round-trip, bounded matching and malformed masks. These are pure route decisions; actual protected native/procedure invocation remains unsupported and has zero effects, including a matching mask. A real TugQL query denied by an empty route allow-list executes no query; removing that narrowing policy restores the baseline. Each lower owner repeats route admission, so an upper allow cannot bypass a lower class denial.
 
 | Vector group | Exact additional assertions | Owner |
 |---|---|---|

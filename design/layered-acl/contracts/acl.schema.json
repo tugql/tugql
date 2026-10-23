@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:dtql:acl:a2",
-  "title": "DTQL layered ACL final reviewed specification shapes",
+  "$id": "urn:tugql:acl:a2",
+  "title": "TugQL layered ACL final reviewed specification shapes",
   "$defs": {
     "id": {
       "type": "string",
@@ -572,7 +572,7 @@
       "type": "object",
       "properties": {
         "apiVersion": {
-          "const": "dtql.org/access/v1"
+          "const": "tugql.org/access/v1"
         },
         "kind": {
           "const": "AccessPolicy"
@@ -696,7 +696,7 @@
       "type": "object",
       "properties": {
         "format": {
-          "const": "dtql-yaml"
+          "const": "tugql-yaml"
         },
         "text": {
           "type": "string",
@@ -851,7 +851,7 @@
       "type": "object",
       "properties": {
         "apiVersion": {
-          "const": "dtql.org/authorization/v1"
+          "const": "tugql.org/authorization/v1"
         },
         "mode": {
           "enum": [
@@ -1883,7 +1883,7 @@
       "type": "object",
       "properties": {
         "apiVersion": {
-          "const": "dtql.org/authorization/v1"
+          "const": "tugql.org/authorization/v1"
         },
         "requestId": {
           "type": "string",
@@ -2143,8 +2143,8 @@
         },
         "format": {
           "enum": [
-            "dtql-policy-json",
-            "dtql-policy-yaml"
+            "tugql-policy-json",
+            "tugql-policy-yaml"
           ]
         },
         "document": {
@@ -2177,8 +2177,8 @@
       "properties": {
         "format": {
           "enum": [
-            "dtql-policy-json",
-            "dtql-policy-yaml"
+            "tugql-policy-json",
+            "tugql-policy-yaml"
           ]
         },
         "document": {
@@ -2243,7 +2243,7 @@
       "type": "object",
       "properties": {
         "apiVersion": {
-          "const": "dtql.org/authorization/v1"
+          "const": "tugql.org/authorization/v1"
         },
         "resource": {
           "$ref": "#/$defs/evidenceResource"
@@ -2309,7 +2309,7 @@
       "type": "object",
       "properties": {
         "apiVersion": {
-          "const": "dtql.org/authorization/v1"
+          "const": "tugql.org/authorization/v1"
         },
         "resource": {
           "$ref": "#/$defs/evidenceResource"
@@ -2387,7 +2387,7 @@
     },
     "executionClass": {
       "enum": [
-        "dtql",
+        "tugql",
         "native_sql",
         "native_graphql",
         "stored_procedure"
@@ -2427,7 +2427,7 @@
                 "properties": {
                   "class": {
                     "enum": [
-                      "dtql",
+                      "tugql",
                       "native_sql",
                       "native_graphql"
                     ]

@@ -14,7 +14,7 @@ InGitDB public DALgo adapter: DB-owned policies + storage transaction
 Git-backed data and policy files
 ```
 
-DTQL specifies values, semantics and transport contracts. DALgo implements reusable parsing, evaluation, query restrictions and write checks. Policy stores and authenticators are host-owned. DataTug's browser may hide a disabled button but only the daemon's secured path enforces its policies. A user accessing OpenVaultDB directly skips DataTug's own optional restrictions, but must still encounter OpenVaultDB and InGitDB restrictions. Do not claim that DataTug policies govern independent lower-layer clients.
+TugQL specifies values, semantics and transport contracts. DALgo implements reusable parsing, evaluation, query restrictions and write checks. Policy stores and authenticators are host-owned. DataTug's browser may hide a disabled button but only the daemon's secured path enforces its policies. A user accessing OpenVaultDB directly skips DataTug's own optional restrictions, but must still encounter OpenVaultDB and InGitDB restrictions. Do not claim that DataTug policies govern independent lower-layer clients.
 
 The InGitDB owner is a library/adapter boundary in this MVP, not another HTTP process. OpenVaultDB cannot choose not to load its policy manifest. InGitDB's public constructor must load/validate the DB owner policy set and return a secured handle. Raw storage handles are private to trusted adapter enforcement code. Hostile Go code, repository owners and filesystem administrators are outside the in-process ACL threat boundary.
 
