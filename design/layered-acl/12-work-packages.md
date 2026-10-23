@@ -14,7 +14,7 @@ Status: A2 plan incorporating approved A1 recommendations. [Executable package c
 | C7 | Execution-class gate and canonical procedure include/exclude masks (03/04); unsupported native effects remain closed | User-requested controls; exact A2 forms reviewed with plan. |
 | C6 | Structured query subset, key-targeted set-assignment UPDATE, final-image constraints and sample bounds | Approve a narrow real vertical slice and explicit unsupported behavior. |
 
-Freeze a reviewed contract revision and machine-readable golden vectors in DTQL; every downstream package references that exact revision. Later contract changes require coordinated review, not divergent implementation assumptions. No parser module extraction, new InGitDB HTTP server, custom ACL service or long-running transaction subsystem in these packages.
+Freeze a reviewed contract revision and machine-readable golden vectors in TugQL; every downstream package references that exact revision. Later contract changes require coordinated review, not divergent implementation assumptions. No parser module extraction, new InGitDB HTTP server, custom ACL service or long-running transaction subsystem in these packages.
 
 ## Dependency graph and order
 
@@ -37,9 +37,9 @@ Parallel work uses fixed contract fixtures and isolated worktrees. One writer pe
 
 Repos: all audited providers/consumers. Dependencies: human sign-off. Tasks: inspect current SHAs/AGENTS, identify current module versions and current NX targets without installing arbitrary latest tooling; inventory transitive adapters (especially `dalgo2openvaultdb`, InGitDB nested module); record compatibility matrix; confirm existing local/hosted auth integration owner; copy accepted source corrections into owner-doc update list. Run focused legacy suites once. Acceptance: reproducible pinned baseline and exact commands for subsequent package checks; stale duplicate OpenVaultDB clone excluded. Risk/effort: low-medium; module drift could invalidate API sketches. Do not broadly synchronize or change unrelated repositories.
 
-## WP1 — DTQL contract schemas and conformance fixtures
+## WP1 — TugQL contract schemas and conformance fixtures
 
-Repos: `datatug/dtql` (normative spec), DALgo test consumer, DataTug TS fixture consumer. Dependencies: WP0 and C1–C6 decisions. Tasks: consume the completed A2 schemas and golden specification artifacts; implement validation/distribution and expand the semantic fixture harness; canonical YAML expected bytes; compatibility vectors for legacy policy conversion; schema freshness/validation check. Preserve existing query schema unchanged. Acceptance: all fixture examples validate; duplicate-key/depth checks specified outside JSON Schema where necessary; semantic validators reject target/query mismatch and private metadata leaks; no prose/schema discrepancy. Tests: T04/T09/T15/T18/T19 fixtures and code-taxonomy exhaustiveness. Risk/effort: medium; avoid overengineering a generic schema generation framework.
+Repos: `tugql/tugql` (normative spec), DALgo test consumer, DataTug TS fixture consumer. Dependencies: WP0 and C1–C6 decisions. Tasks: consume the completed A2 schemas and golden specification artifacts; implement validation/distribution and expand the semantic fixture harness; canonical YAML expected bytes; compatibility vectors for legacy policy conversion; schema freshness/validation check. Preserve existing query schema unchanged. Acceptance: all fixture examples validate; duplicate-key/depth checks specified outside JSON Schema where necessary; semantic validators reject target/query mismatch and private metadata leaks; no prose/schema discrepancy. Tests: T04/T09/T15/T18/T19 fixtures and code-taxonomy exhaustiveness. Risk/effort: medium; avoid overengineering a generic schema generation framework.
 
 ## WP2 — DALgo documents, principal snapshots and multi-decisions
 
@@ -47,7 +47,7 @@ Repo: `dal-go/dalgo`, primarily `access/{document,principal,policy,context}.go` 
 
 ## WP3 — DALgo enforcement and shared dry run
 
-Repo: `dal-go/dalgo`, `access/{session,condition,fields,write}.go`, `condeval`, existing end2end access harness. Depends WP2. Tasks: shared plan/evidence assessment; collect independent blockers across policies/targets; query reference checks migrated from DataTug; before-paging row filters, conservative field bounds; pre/post image full touched-field validation including set removal/nested set; capability checks; no-data-read plan and bounded inspect; pure provider/custom handling. Acceptance: T01/T04/T07/T08/T10/T16 unit/recording-adapter behaviors; zero side effects on denial/dry run; existing tests pass. Tests: focused access+dtql+condeval, recording adapters, meaningful property/fuzz cases; one full provider suite before release. Risk/effort: high, core security critical. No new arbitrary SQL analyzer.
+Repo: `dal-go/dalgo`, `access/{session,condition,fields,write}.go`, `condeval`, existing end2end access harness. Depends WP2. Tasks: shared plan/evidence assessment; collect independent blockers across policies/targets; query reference checks migrated from DataTug; before-paging row filters, conservative field bounds; pre/post image full touched-field validation including set removal/nested set; capability checks; no-data-read plan and bounded inspect; pure provider/custom handling. Acceptance: T01/T04/T07/T08/T10/T16 unit/recording-adapter behaviors; zero side effects on denial/dry run; existing tests pass. Tests: focused access+tugql+condeval, recording adapters, meaningful property/fuzz cases; one full provider suite before release. Risk/effort: high, core security critical. No new arbitrary SQL analyzer.
 
 ## WP4a/b — InGitDB owner storage and enforcement
 
@@ -55,7 +55,7 @@ Repos: `ingitdb/ingitdb-go` root config/schema, `ingitdb/dalgo2ingitdb`, relevan
 
 ## WP5a/b — OpenVaultDB and HTTP driver
 
-Repos: `openvaultdb/openvaultdb-go`, `openvaultdb/openvaultdb` docs, `dal-go/dalgo2openvaultdb`, optional `openvaultdb/ovdb` bootstrap config flags only. WP5a depends WP1; WP5b depends WP3+WP4b+WP5a. Tasks: own policy store; source registry and capability discovery; C2 routes and redaction; stable subject/actor mapping onto existing token store; control-plane admin grants, private policy visibility; collection-aware DTQL capability check; secured core/mount all paths; revision-bearing point read and atomic write precondition; typed driver result/error transport; bounds and sample endpoint. Acceptance: real HTTP three-blocker response, no owner-token override, CRUD revision/persistence, native source opacity and SQLite smoke, no writes in evaluate. Tests: auth/server/core/mount/driver tests, T07–T19 applicable cases, compatibility tests for old non-ACL clients. Risk/effort: high; existing error mapping and broad auth shortcuts must be audited route-by-route.
+Repos: `openvaultdb/openvaultdb-go`, `openvaultdb/openvaultdb` docs, `dal-go/dalgo2openvaultdb`, optional `openvaultdb/ovdb` bootstrap config flags only. WP5a depends WP1; WP5b depends WP3+WP4b+WP5a. Tasks: own policy store; source registry and capability discovery; C2 routes and redaction; stable subject/actor mapping onto existing token store; control-plane admin grants, private policy visibility; collection-aware TugQL capability check; secured core/mount all paths; revision-bearing point read and atomic write precondition; typed driver result/error transport; bounds and sample endpoint. Acceptance: real HTTP three-blocker response, no owner-token override, CRUD revision/persistence, native source opacity and SQLite smoke, no writes in evaluate. Tests: auth/server/core/mount/driver tests, T07–T19 applicable cases, compatibility tests for old non-ACL clients. Risk/effort: high; existing error mapping and broad auth shortcuts must be audited route-by-route.
 
 ## WP6 — DataTug daemon, provider reuse and secured connection
 
@@ -71,7 +71,7 @@ Repos: DataTug E2E harness plus existing OpenVaultDB/InGitDB conformance harness
 
 ## WP9 — Documentation, release and approved handoff completion
 
-Repos: all owner docs and module consumers. Depends WP8. Tasks: update DALgo stale access docs/spec status, OpenVaultDB stale auth/DTQL docs, InGitDB root config docs/server direction, DataTug feature specs; publish DTQL schemas under approved namespace; pin provider releases in dependency order; retain release matrix and migration examples. Conformance claim is version/profile-specific. Acceptance: package versions and supported capabilities documented, legacy disabled behavior tested, no canonical spec claims that contradict code. Use repository-required specification tooling where available; do not silently rewrite unrelated existing decisions. Risk/effort: low-medium.
+Repos: all owner docs and module consumers. Depends WP8. Tasks: update DALgo stale access docs/spec status, OpenVaultDB stale auth/TugQL docs, InGitDB root config docs/server direction, DataTug feature specs; publish TugQL schemas under approved namespace; pin provider releases in dependency order; retain release matrix and migration examples. Conformance claim is version/profile-specific. Acceptance: package versions and supported capabilities documented, legacy disabled behavior tested, no canonical spec claims that contradict code. Use repository-required specification tooling where available; do not silently rewrite unrelated existing decisions. Risk/effort: low-medium.
 
 ## Scope ledger
 

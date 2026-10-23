@@ -51,7 +51,7 @@ columns:
 ```
 
 This corresponds to the illustrative compact notation
-`*-(Billing*, Password*)`; the DTQL representation remains YAML.
+`*-(Billing*, Password*)`; the TugQL representation remains YAML.
 
 ## Semantics
 

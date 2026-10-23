@@ -2,7 +2,7 @@
 
 Status: A1 reconciled recommendations and H1–H7 approved by the user; A3 user-confirmed scoped masks and implementation plan reviewed, reconciled and correction-verified; awaiting human implementation sign-off. Design only; no MVP implementation is authorized by this packet. Author: Astra A, 2026-09-08.
 
-DTQL owns the portable policy and authorization wire specifications. DALgo evolves its existing `access`, `dtql`, and `condeval` implementation. InGitDB, OpenVaultDB, and the DataTug daemon enforce their own policy sets. The browser displays and administers authorized policy surfaces; it is never an enforcement boundary.
+TugQL owns the portable policy and authorization wire specifications. DALgo evolves its existing `access`, `tugql`, and `condeval` implementation. InGitDB, OpenVaultDB, and the DataTug daemon enforce their own policy sets. The browser displays and administers authorized policy surfaces; it is never an enforcement boundary.
 
 The MVP is a real DataTug browser → DataTug daemon → OpenVaultDB HTTP → embedded InGitDB adapter vertical slice, with persisted policies at all three owners, a protected structured query and key-targeted UPDATE, multiple blockers, and Explain Access. It does not recreate InGitDB's removed HTTP server or turn the read-only query builder into a SQL mutation console.
 
@@ -12,7 +12,7 @@ The MVP is a real DataTug browser → DataTug daemon → OpenVaultDB HTTP → em
 |---|---|
 | [01-current-state.md](01-current-state.md) | Evidence, reusable code, discrepancies, gaps, baseline validation |
 | [02-architecture.md](02-architecture.md) | Boundaries, composition, execution and race handling |
-| [03-policy-format.md](03-policy-format.md) | Proposed DTQL policy document and normative semantics |
+| [03-policy-format.md](03-policy-format.md) | Proposed TugQL policy document and normative semantics |
 | [04-authorization-contract.md](04-authorization-contract.md) | Wire types, taxonomy, management and Explain contracts |
 | [05-dalgo.md](05-dalgo.md) | Additive evaluator, enforcement and provider interfaces |
 | [06-identity.md](06-identity.md) | Stable identities, bindings, actors, trusted propagation |
@@ -32,11 +32,11 @@ The MVP is a real DataTug browser → DataTug daemon → OpenVaultDB HTTP → em
 | [reviews/rubric.md](reviews/rubric.md) | Identical independent review instructions and metrics |
 | [audit-snapshots.json](audit-snapshots.json) | Exact local repository revisions audited |
 
-Normative MUST/SHOULD language describes proposed implementation obligations, not current behavior. C1–C6 architectural choices are approved; the exact A2 contract revision remains subject to the implementation-plan review checkpoint. Examples are specification fixtures, not installed policies. This packet lives together in the standalone DTQL repository to give both reviewers identical cross-repository material. Owner-repository document updates and links are explicit work packages, not a claim that those repositories already adopted this design.
+Normative MUST/SHOULD language describes proposed implementation obligations, not current behavior. C1–C6 architectural choices are approved; the exact A2 contract revision remains subject to the implementation-plan review checkpoint. Examples are specification fixtures, not installed policies. This packet lives together in the standalone TugQL repository to give both reviewers identical cross-repository material. Owner-repository document updates and links are explicit work packages, not a claim that those repositories already adopted this design.
 
 ## Approval boundaries
 
-Before parallel implementation, approve C1 policy semantics/version, C2 decision/request/admin wire shapes, C3 principal trust profile, C4 provider and enforcement capabilities, C5 mutation revision contract, and C6 supported query/write subset. See the decision log. Existing supported DALgo behavior remains under its existing version; new stricter behavior is negotiated through the DTQL ACL profile.
+Before parallel implementation, approve C1 policy semantics/version, C2 decision/request/admin wire shapes, C3 principal trust profile, C4 provider and enforcement capabilities, C5 mutation revision contract, and C6 supported query/write subset. See the decision log. Existing supported DALgo behavior remains under its existing version; new stricter behavior is negotiated through the TugQL ACL profile.
 
 The independent reviews must use the same packet digest and rubric without access to each other's findings. A separate reconciler classifies findings and produces the human decision report and cost/value comparison. Design approval and permission to dispatch implementation are separate; this phase stops for human sign-off.
 

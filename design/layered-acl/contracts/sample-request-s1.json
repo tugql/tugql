@@ -1,10 +1,10 @@
 {
-  "apiVersion": "dtql.org/authorization/v1",
+  "apiVersion": "tugql.org/authorization/v1",
   "mode": "sample",
   "diagnosticLevel": "ordinary",
   "sample": {
     "query": {
-      "format": "dtql-yaml",
+      "format": "tugql-yaml",
       "text": "from:\n  name: customers\n"
     },
     "limit": 1
@@ -13,7 +13,7 @@
     {
       "id": "s1",
       "action": "update",
-      "executionClass": "dtql",
+      "executionClass": "tugql",
       "resource": {
         "databaseId": "crm",
         "path": "/customers"

@@ -1,6 +1,6 @@
 # Identity, authentication and principal propagation
 
-Contract C3. Authentication establishes a subject and acting client; authorization uses trusted current membership and grants. DTQL is not a login, token issuance or identity federation protocol.
+Contract C3. Authentication establishes a subject and acting client; authorization uses trusted current membership and grants. TugQL is not a login, token issuance or identity federation protocol.
 
 ## Canonical identity
 

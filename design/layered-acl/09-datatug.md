@@ -33,11 +33,11 @@ Effective     Denied
 Some additional row checks were not evaluated because evidence is private.
 ```
 
-This display requires granted reference diagnostics; ordinary users may see generic source-level denial instead. No hard-coded English explanation arrives from DTQL; DataTug localizes reason codes and renders safe facts. Each response displays policy revisions and whether it was plan/inspect/sample, hypothetical and complete/partial. Changed revisions invalidate prior displays. Explain is explicitly advisory until the actual operation is reauthorized.
+This display requires granted reference diagnostics; ordinary users may see generic source-level denial instead. No hard-coded English explanation arrives from TugQL; DataTug localizes reason codes and renders safe facts. Each response displays policy revisions and whether it was plan/inspect/sample, hypothetical and complete/partial. Changed revisions invalidate prior displays. Explain is explicitly advisory until the actual operation is reauthorized.
 
 ## Real read and write
 
-Reuse the query result grid for a supported DTQL query through the daemon → OpenVaultDB connection. ACL-enabled native/opaque query tabs are rejected unless a separately supported future enforcement profile exists. Do not rely on the browser's SQL convenience parser to establish accessed tables/fields. Keep the existing query builder read-only by construction.
+Reuse the query result grid for a supported TugQL query through the daemon → OpenVaultDB connection. ACL-enabled native/opaque query tabs are rejected unless a separately supported future enforcement profile exists. Do not rely on the browser's SQL convenience parser to establish accessed tables/fields. Keep the existing query builder read-only by construction.
 
 Add a small record-edit flow on an authorized row: choose exact fields, edit scalar values, optionally Explain the candidate, submit a key-targeted typed UPDATE with the owner data revision. The server obtains/validates evidence and binds its policy snapshot; stale record → conflict and reload, never silent retry. Display returned blockers across layers in one response. A write may be denied even when buttons were enabled or Explain previously allowed; the UI must handle this as normal changed-state behavior.
 

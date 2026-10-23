@@ -8,7 +8,7 @@ TugQL specification — an open, portable query language and structured query tr
 - **Query Tree Representation:** **TugQT** (structured JSON/YAML query tree)
 
 > **Naming & Rebrand Decision:**
-> DTQL has been renamed to TugQL. TugQL is the canonical name of the SQL-like query language and TugQL.org is its canonical public home. DTQL.org is retained as a permanent redirect for backwards compatibility and discovery.
+> DTQL has been renamed to TugQL. TugQL is the canonical name of the SQL-like query language and TugQL.org is its canonical public home. DTQL.org (dtql.org) is retained as a permanent redirect for backwards compatibility and discovery.
 > TugQT (Tug Query Tree) is the intended name for the human-readable, machine-readable JSON/YAML representation of the parsed/canonical query tree.
 
 ## Used in DataTug development
@@ -20,6 +20,8 @@ TugQL specification — an open, portable query language and structured query tr
 The [negative projection reference](reference/negative-projection.md) defines
 how a query selects all columns except an explicit list, including qualified
 source scope and missing-name behavior.
+
+The [comments reference](reference/comments.md) defines the `--` and `//` comments of the text form, the `#` comments of the YAML form, and how comments convert between them.
 
 The [aggregation reference](reference/aggregation.md) defines YAML-native
 grouping, aggregate expressions, HAVING, aliases, null/empty semantics, and the

@@ -17,7 +17,7 @@ MVP targets single root collections. Match canonical collection base name resolv
 Example complete narrowing policy (applicable to all authenticated subjects already admitted by other mandatory policies):
 
 ```yaml
-apiVersion: dtql.org/access/v1
+apiVersion: tugql.org/access/v1
 kind: AccessPolicy
 metadata:
   name: public-customer-surface
@@ -32,7 +32,7 @@ collectionMask:
     - exclude: ["sys_*"]
 execution:
   allow:
-    - class: dtql
+    - class: tugql
 scopes:
   - path: /
     rules:

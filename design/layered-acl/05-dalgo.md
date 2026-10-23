@@ -1,12 +1,12 @@
 # DALgo reusable implementation design
 
-Contracts C1/C2/C4. Extend `access`, reuse `dtql` and `condeval`, and retain existing public APIs. Do not create a separate evaluator in OpenVaultDB or DataTug. Go signatures below are proposed API sketches whose data fields are governed by C1/C2, not implementation added in this phase.
+Contracts C1/C2/C4. Extend `access`, reuse `tugql` and `condeval`, and retain existing public APIs. Do not create a separate evaluator in OpenVaultDB or DataTug. Go signatures below are proposed API sketches whose data fields are governed by C1/C2, not implementation added in this phase.
 
 ## Responsibilities and package boundary
 
 `access.Policy`, `AccessPolicy`, `PrincipalPolicySet`, `WithPrincipal`, `WithVariables`, `SecureDB`, `BindDB`, secured sessions and existing codecs remain. Add the portable document adapter/version decoder alongside legacy decoding. A validated editable document AST preserves bindings, metadata and targets; it compiles into existing rule objects. Do not round-trip solely through the flattened compiled policy and lose document structure.
 
-Keep `dal` independent of YAML and HTTP. Keep protocol-specific JSON projection out of the storage interfaces. A small `access/contract` or `dtql/access` package can expose DTOs and converters without creating `access`↔`dtql` import cycles; choose one implementation home during WP2, with import-boundary tests. DTQL the repository owns normative fields and conformance vectors regardless of which Go package implements them. No immediate extraction into the placeholder `dtql-go` module is necessary.
+Keep `dal` independent of YAML and HTTP. Keep protocol-specific JSON projection out of the storage interfaces. A small `access/contract` or `tugql/access` package can expose DTOs and converters without creating `access`↔`tugql` import cycles; choose one implementation home during WP2, with import-boundary tests. TugQL the repository owns normative fields and conformance vectors regardless of which Go package implements them. No immediate extraction into the placeholder `tugql-go` module is necessary.
 
 ## Proposed reusable interfaces
 
@@ -48,6 +48,6 @@ Private mutation evidence must include whole-record revision and final candidate
 
 ## Tests and migration gates
 
-Keep baseline legacy tests passing. New tests: golden DTQL documents and canonicalization; strict duplicate/unknown-key parsing; user+role+group union; tie precedence; differential legacy adapter conversion; multiple-policy/target blocker sets; read plan conditional vs inspect exact; unsupported custom inspection; safe codes without English dependencies; no hidden-field filter/sort bypass; set deletion/nested writes; immutable principal snapshots; missing enabled policies; adapter residual rejection; schema/DTO import boundaries.
+Keep baseline legacy tests passing. New tests: golden TugQL documents and canonicalization; strict duplicate/unknown-key parsing; user+role+group union; tie precedence; differential legacy adapter conversion; multiple-policy/target blocker sets; read plan conditional vs inspect exact; unsupported custom inspection; safe codes without English dependencies; no hidden-field filter/sort bypass; set deletion/nested writes; immutable principal snapshots; missing enabled policies; adapter residual rejection; schema/DTO import boundaries.
 
 Use recording adapters to prove no read in plan mode, only bounded reads in inspect mode, and zero writes/triggers/commits in both modes. Property tests for cross-policy monotonicity and result invariance under policy iteration order are high-value. Fuzz path/field parsing, duplicates and depth/size bounds. Existing `end2end/test_access.go` is the extension point for adapter conformance. Do not build a new fleet-wide ACL test framework.
