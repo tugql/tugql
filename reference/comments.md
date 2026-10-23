@@ -18,7 +18,6 @@ WHERE active = true
 - A marker inside a string literal or a quoted identifier is not a comment
   (`'a -- b'`, `'http://example.com'`, `"odd // name"`).
 - `#` is **not** a comment in text form.
-- `/* ... */` block comments are not part of the language.
 
 ## YAML form
 
@@ -37,6 +36,12 @@ where: active = true
 The `//` marker is therefore lost on a text to YAML to text round trip: a
 `//` comment comes back as `--`. The comment text is preserved; only the
 marker changes. This loss is documented and accepted.
+
+Comments are never dropped silently, in either direction. A comment with no
+clean anchor becomes the leading comment of the nearest following element. A
+comment that trails the document becomes a document-end comment. If neither
+placement works, a positioned diagnostic is raised instead of losing the
+comment.
 
 The formatter keeps the marker the author wrote (`--` stays `--`, `//` stays
 `//`) when it reformats a text-form query.
