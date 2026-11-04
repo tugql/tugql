@@ -107,6 +107,8 @@ T20 — Execution classes/masks: a mandatory TugQL-only gate rejects native SQL/
 | V07 response | Sample operation IDs map to template; zero/all-allow samples conditional; partial sample indeterminate unless denial; every reference resolves; restriction variant fields exact; dry-run enforced=false; no private policy cardinality | WP1/WP5/WP7 |
 | V08 limits/schema | 1001 query rows, offset10001, >8MiB, elapsed10s or lockwait exhausted yields bounded failure/no partial success; schema hides unreadable fields; DDL rejects even for policy admin; no post-commit retry promise | WP3/WP4/WP5 |
 
+V02 and the query engine's null test. V02 governs policy predicates (`access.DocumentCondition`, `condeval`) only: there a missing field never matches, and policy predicates intentionally have no null test. A policy that contains `isNull` / `isNotNull` is rejected (tests: `condeval` `TestIsNullConditionIsOutsideThePolicySubset`, `access` `TestDocumentConditionRejectsNullTests`), because a null test would make a missing field match. The query engine follows a different rule on purpose: a missing field reads as NULL, and `isNull` is TRUE for it. Read V02 together with dal-go/dalgo [`spec/features/tugql-subqueries/README.md`, REQ `null-tests`](https://github.com/dal-go/dalgo/blob/main/spec/features/tugql-subqueries/README.md#req-null-tests) and [`docs/queries.md`, "Testing for NULL"](https://github.com/dal-go/dalgo/blob/main/docs/queries.md#testing-for-null). The two rules govern different evaluators and do not conflict.
+
 ## Explicit mission proof map
 
 | # | Required proof | Test evidence |
