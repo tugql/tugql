@@ -43,9 +43,9 @@ running the query binds it.
 - A target never carries a password. A target such as
   `'postgres://reader:secret@host/db'` is rejected (`database_credentials`);
   credentials come from the executing tool.
-- An alias with no target is bound by the caller, for example
-  `datatug query run --db sales=datatug://chinook/sales`. Saved queries usually
-  leave targets out so one query runs in every environment.
+- An alias with no target is bound by the tool that runs the query, for
+  example from its project or environment settings. Saved queries usually leave
+  targets out so one query runs in every environment.
 
 ## Qualified sources
 
@@ -54,7 +54,11 @@ running the query binds it.
   `crm::spaces/{SpaceID}/ext/datatug/projects`.
 - `::` touches both the alias and the path.
 - An unqualified source reads the default database, so a query without a
-  `databases` block means what it always meant.
+  `databases` block means what it always meant. Once a query declares
+  databases, an unqualified source can only match the default database.
+- A query that runs across databases qualifies every source, as the example
+  above does. To read the default database in such a query, declare it as an
+  alias too (see [Execution](#execution)).
 - A join across two databases states its `on` explicitly. Relationship
   metadata belongs to one database, so `on` cannot be inferred across two.
 
@@ -105,12 +109,15 @@ query:
 ```
 
 This is the tree of `databases ( geo )` + `from Invoice as i join geo::Country as c on i.BillingCountry = c.Name select i.InvoiceId, c.Name`:
-`Invoice` is unqualified, so it reads the default database.
+It illustrates the tree shape only: `Invoice` is unqualified, so this query
+parses and resolves but cannot run across databases (see below).
 
 ## Execution
 
 The executing tool binds each alias to a database and runs the query through
-DALgo's federated executor. Each source is read from its own database; joins,
+DALgo's federated executor. Federated execution requires every source to be
+qualified: a source with no `alias::` fails closed instead of guessing a
+database. Each source is read from its own database; joins,
 grouping and subqueries that span databases run in the engine, not in one
 database's native SQL. The executing tool must check every source against its
 own database's access policy.
