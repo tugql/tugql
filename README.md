@@ -21,6 +21,10 @@ The [negative projection reference](reference/negative-projection.md) defines
 how a query selects all columns except an explicit list, including qualified
 source scope and missing-name behavior.
 
+The [cross-database reference](reference/cross-database.md) defines the
+`databases` block and the `alias::` source qualifier that let one query join and
+nest sources from several databases.
+
 The [comments reference](reference/comments.md) defines the `--` and `//` comments of the text form, the `#` comments of the YAML form, and how comments convert between them.
 
 The [aggregation reference](reference/aggregation.md) defines YAML-native
