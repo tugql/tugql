@@ -7,6 +7,14 @@ TugQL specification — an open, portable query language and structured query tr
 - **Query Language:** **TugQL** (SQL-like syntax)
 - **Query Tree Representation:** **TugQT** (structured JSON/YAML query tree)
 
+## Sites and implementations
+
+- [TugQL.org](https://tugql.org/) — language home and documentation.
+- [DALgo for Go](https://github.com/dal-go/dalgo/tree/main/tugql) and [DALgo for TypeScript](https://github.com/dal-go/dalgo-js) — implementation sources; supported features differ by implementation and adapter.
+- [DALgo](https://dalgo.io/) — data-access layer used by the Go implementation.
+- [DataTug](https://datatug.app/) — related database exploration product.
+- [QueryDock](https://querydock.run/) — related SQL playground for PostgreSQL-compatible PGlite, SQLite and DuckDB. Its current editors do not execute TugQL.
+
 > **Naming & Rebrand Decision:**
 > DTQL has been renamed to TugQL. TugQL is the canonical name of the SQL-like query language and TugQL.org is its canonical public home. DTQL.org (dtql.org) is retained as a permanent redirect for backwards compatibility and discovery.
 > TugQT (Tug Query Tree) is the intended name for the human-readable, machine-readable JSON/YAML representation of the parsed/canonical query tree.
